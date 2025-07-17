@@ -4,7 +4,7 @@ import Weather from './Component/Weather';
 function App() {
   return (
     <div className="App">
-      <h1>WeatherRader</h1>
+      <h1>Weather Forcast</h1>
       <Weather />
     </div>
   );
