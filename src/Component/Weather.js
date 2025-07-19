@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Clock from "./Clock";
 import '../App.css';
@@ -30,24 +30,27 @@ const Weather = () => {
         return `/weather-icons/${iconMap[weatherMain] || "default.png"}`;
     };
 
-    const fetchData = async () => {
+    const fetchWeather = async () => {
         try {
             const response = await axios.get(
                 `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
             );
             setWeatherData(response.data);
-            console.log(response.data); // for debugging
         } catch (error) {
             console.error(error);
         }
     };
 
+    useEffect(() => {
+        fetchWeather();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     const handleInputChange = (e) => {
         setCity(e.target.value);
     };
     const handelSubmit = (e) => {
         e.preventDefault();
-        fetchData();
+        fetchWeather();
     };
 
     return (
@@ -77,7 +80,7 @@ const Weather = () => {
                                     weatherData ? (
                                         <>
                                             <div className="row weather_row">
-                                                <h4 className="pt-4">{weatherData.name}, {weatherData.sys.country}</h4>
+                                                <h4 className="pt-3">{weatherData.name}, {weatherData.sys.country}</h4>
                                                 <div className="col-md-6 mini_area">
                                                     <div className="row">
                                                         <div className="col-md-8">
@@ -115,7 +118,8 @@ const Weather = () => {
                                                 <div className="col-md-6 mini_area">
                                                     <div className="row">
                                                         <div className="col-md-8">
-                                                            <p>Rain: {weatherData.weather[0].main === "Rain" ? "Yes" : "No"}</p>
+                                                            <p>Rain: </p>
+                                                            <p>{weatherData.weather[0].main === "Rain" ? "Yes" : "No"}</p>
                                                         </div>
                                                         <div className="col-md-4">
                                                             <img src="newicons/rain.gif" alt="Rain" className="icon-sm me-2" />
@@ -152,21 +156,21 @@ const Weather = () => {
                             <div className="col-md-4">
                                 <div className="right_panel">
                                     {
-                                    weatherData ? (
-                                        <>
-                                            <p className="right_top">{weatherData.weather[0].main} - {weatherData.weather[0].description}</p>
-                                            <p className="big_temp">{weatherData.main.temp}°C</p>
-                                            <img
-                                                src={getWeatherIcons(
-                                                    weatherData.weather[0].main,
-                                                    isDaytime(weatherData.sys.sunrise, weatherData.sys.sunset)
-                                                )}
-                                                className="img-fluid"
-                                                alt={weatherData.weather[0].description}
-                                            />
-                                        </>
-                                    ) : (<span>Loading...</span>)
-                                }
+                                        weatherData ? (
+                                            <>
+                                                <p className="right_top">{weatherData.weather[0].main} - {weatherData.weather[0].description}</p>
+                                                <p className="big_temp">{weatherData.main.temp}°C</p>
+                                                <img
+                                                    src={getWeatherIcons(
+                                                        weatherData.weather[0].main,
+                                                        isDaytime(weatherData.sys.sunrise, weatherData.sys.sunset)
+                                                    )}
+                                                    className="img-fluid"
+                                                    alt={weatherData.weather[0].description}
+                                                />
+                                            </>
+                                        ) : (<span>Loading...</span>)
+                                    }
                                 </div>
                             </div>
                         </div>

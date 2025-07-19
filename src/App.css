@@ -11,6 +11,7 @@
 }
 .clock {
   padding-bottom: 10px;
+  text-align: left;
 }
 .card {
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2) !important;
@@ -31,21 +32,19 @@
 .big_temp {
   font-size: 3.5rem;
 }
-.weather_row > div > span {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
 .Weather.day {
-  background: linear-gradient(to bottom, #87ceeb, #ffffff); /* light blue sky */
+  background: url("/public/day-night-bg/day.jpg") no-repeat center center/cover;
+  /* background: linear-gradient(to bottom, #87ceeb, #ffffff); */
   color: #000;
 }
 .Weather.night {
-  background: linear-gradient(
+  background: url("/public/day-night-bg/night.jpg") no-repeat center center/cover;
+  /* background: linear-gradient(
     180deg,
     rgba(26, 26, 64, 1) 0%,
     rgba(43, 55, 181, 1) 100%,
     rgba(26, 26, 64, 1) 100%
-  ); /* deep blue/purple */
+  ); */
   color: #f0f0f0;
 }
 .icon-sm {
@@ -67,5 +66,7 @@
 }
 .mybtn
 {
-  
+  background-color: #33CBCC !important;
+  outline-color: #33CBCC !important;
+  color: #000 !important;
 }
