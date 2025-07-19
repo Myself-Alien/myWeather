@@ -3,9 +3,12 @@
   font-family: "Roboto", sans-serif;
   font-style: normal;
 }
+.top_logo
+{
+  color: #fff !important;
+}
 .Weather {
   text-align: center;
-  background-color: #e0e1dd;
   height: 100vh;
   transition: background-color 1s ease, color 1s ease;
 }
@@ -13,15 +16,21 @@
   padding-bottom: 10px;
   text-align: left;
 }
+input{
+  border-color: #33CBCC !important;
+}
 .card {
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2) !important;
+  background-color: #d3d3d3 !important;
+  border-color: #33CBCC !important;
 }
 .right_panel img {
   width: 250px;
   height: auto;
 }
 .right_panel {
-  border: 1px solid #d3d3d3;
+  border: 1px solid #33CBCC;
+  background-color: #fff;
   border-radius: 20px;
 }
 .right_top {
@@ -34,18 +43,9 @@
 }
 .Weather.day {
   background: url("/public/day-night-bg/day.jpg") no-repeat center center/cover;
-  /* background: linear-gradient(to bottom, #87ceeb, #ffffff); */
-  color: #000;
 }
 .Weather.night {
   background: url("/public/day-night-bg/night.jpg") no-repeat center center/cover;
-  /* background: linear-gradient(
-    180deg,
-    rgba(26, 26, 64, 1) 0%,
-    rgba(43, 55, 181, 1) 100%,
-    rgba(26, 26, 64, 1) 100%
-  ); */
-  color: #f0f0f0;
 }
 .icon-sm {
   width: 50px;
@@ -56,10 +56,11 @@
   padding-right: 0px !important;
 }
 .mini_area > .row {
-  border: 1px solid #d3d3d3;
+  border: 1px solid #33CBCC;
   border-radius: 20px;
   margin: 5px;
   padding: 10px;
+  background-color: #fff;
 }
 .mini_area > div > div > p {
   margin-bottom: 0px !important;
@@ -69,4 +70,5 @@
   background-color: #33CBCC !important;
   outline-color: #33CBCC !important;
   color: #000 !important;
+  border-color: #33CBCC !important;
 }

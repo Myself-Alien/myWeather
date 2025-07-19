@@ -45,6 +45,7 @@ const Weather = () => {
         fetchWeather();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
     const handleInputChange = (e) => {
         setCity(e.target.value);
     };
@@ -52,11 +53,10 @@ const Weather = () => {
         e.preventDefault();
         fetchWeather();
     };
-
     return (
         <>
             <div className={`container-fluid roboto-font Weather ${weatherData ? (isDaytime(weatherData.sys.sunrise, weatherData.sys.sunset) ? "day" : "night") : ""}`}>
-                <h1 className="p-3 roboto-font">Weather Forecast</h1>
+                <h1 className="top_logo p-3 roboto-font">Weather Forecast</h1>
                 <div className="container">
                     <div className="card p-4">
                         <div className="row">
