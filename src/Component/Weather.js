@@ -7,27 +7,41 @@ const Weather = () => {
     const [city, setCity] = useState('kolkata');
     const [weatherData, setWeatherData] = useState(null);
     const API_KEY = '51402e506157cc14eff84c3ba599ceb8';
-    const getWeatherIcons = (weatherMain) => {
+
+    const isDaytime = (sunrise, sunset) => {
+        const now = Date.now();
+        return now >= sunrise * 1000 && now < sunset * 1000;
+    };
+
+    const getWeatherIcons = (weatherMain, isDay) => {
         const iconMap = {
-            Clear: "clear.svg",
-            Clouds: "clouds.svg",
-            Rain: "rain.svg",
+            Clear: isDay ? "clear-day.svg" : "clear-night.svg",
+            Clouds: isDay ? "partly-cloudy-day.svg" : "partly-cloudy-night.svg",
+            Rain: isDay ? "partly-cloudy-day.svg" : "partly-cloudy-night.svg",
             Thunderstorm: "thunderstorm.svg",
             Mist: "mist.svg",
+            Drizzle: "drizzle.svg",
+            Dust: "dust.svg",
+            Fog: "fog.svg",
+            Haze: "haze.svg",
+            Snow: "snow.svg",
+            Wind: "wind.svg",
         };
         return `/weather-icons/${iconMap[weatherMain] || "default.png"}`;
-    }
+    };
+
     const fetchData = async () => {
         try {
             const response = await axios.get(
                 `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
             );
             setWeatherData(response.data);
-            console.log(response.data); // console data
+            console.log(response.data); // for debugging
         } catch (error) {
             console.error(error);
         }
     };
+
     const handleInputChange = (e) => {
         setCity(e.target.value);
     };
@@ -35,61 +49,125 @@ const Weather = () => {
         e.preventDefault();
         fetchData();
     };
+
     return (
         <>
-            <div className="container-fluid roboto-font Weather">
-                <h1 className="p-3 roboto-font">Weather Forcast</h1>
+            <div className={`container-fluid roboto-font Weather ${weatherData ? (isDaytime(weatherData.sys.sunrise, weatherData.sys.sunset) ? "day" : "night") : ""}`}>
+                <h1 className="p-3 roboto-font">Weather Forecast</h1>
                 <div className="container">
                     <div className="card p-4">
                         <div className="row">
-                            <div className="col-md-6">
-                                <Clock />
+                            <div className="col-md-8">
+                                <span className="clock pb-2">
+                                    <Clock />
+                                </span>
                                 <form onSubmit={handelSubmit}>
                                     <div className="input-group">
-                                        <input type="text" placeholder="Enter city name" className="form-control" value={city} onChange={handleInputChange} />
-                                        <button type="submit" className="btn btn-secondary">Search</button>
+                                        <input
+                                            type="text"
+                                            placeholder="Enter city name"
+                                            className="form-control"
+                                            value={city}
+                                            onChange={handleInputChange}
+                                        />
+                                        <button type="submit" className="btn btn-secondary mybtn">Search</button>
                                     </div>
                                 </form>
                                 {
                                     weatherData ? (
                                         <>
                                             <div className="row weather_row">
-                                                <h5>{weatherData.name}, {weatherData.sys.country}</h5>
-                                                <div className="col-md-6 p-4">
-                                                    <span>Temperature: {weatherData.main.temp}°C</span>
+                                                <h4 className="pt-4">{weatherData.name}, {weatherData.sys.country}</h4>
+                                                <div className="col-md-6 mini_area">
+                                                    <div className="row">
+                                                        <div className="col-md-8">
+                                                            <p>Feels like: </p>
+                                                            <p>{weatherData.main.feels_like}°C</p>
+                                                        </div>
+                                                        <div className="col-md-4">
+                                                            <img src="newicons/hot.gif" alt="Temp" className="icon-sm" />
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div className="col-md-6 p-4">
-                                                    <span>Feels like : {weatherData.main.feels_like}°C</span>
+                                                <div className="col-md-6 mini_area">
+                                                    <div className="row">
+                                                        <div className="col-md-8">
+                                                            <p>Humidity: </p>
+                                                            <p> {weatherData.main.humidity}%</p>
+                                                        </div>
+                                                        <div className="col-md-4">
+                                                            <img src="newicons/humidity.gif" alt="Humidity" className="icon-sm" />
+                                                        </div>
+                                                    </div>
+                                                    <span></span>
                                                 </div>
-                                                <div className="col-md-6 p-4">
-                                                    <span>Pressure : {weatherData.main.pressure}</span>
+                                                <div className="col-md-6 mini_area">
+                                                    <div className="row">
+                                                        <div className="col-md-8">
+                                                            <p>Wind Speed: </p>
+                                                            <p>{weatherData.wind.speed} m/s</p>
+                                                        </div>
+                                                        <div className="col-md-4">
+                                                            <img src="newicons/wind.gif" alt="Wind" className="icon-sm" />
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div className="col-md-6 p-4">
-                                                    <span>Wind : {weatherData.wind.speed}m/s</span>
+                                                <div className="col-md-6 mini_area">
+                                                    <div className="row">
+                                                        <div className="col-md-8">
+                                                            <p>Rain: {weatherData.weather[0].main === "Rain" ? "Yes" : "No"}</p>
+                                                        </div>
+                                                        <div className="col-md-4">
+                                                            <img src="newicons/rain.gif" alt="Rain" className="icon-sm me-2" />
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div className="col-md-6 p-4">
-                                                    <span>Wind Speed : {weatherData.wind.speed}m/s</span>
+                                                <div className="col-md-6 mini_area">
+                                                    <div className="row">
+                                                        <div className="col-md-8">
+                                                            <p>Sunrise: </p>
+                                                            <p>{new Date(weatherData.sys.sunrise * 1000).toLocaleTimeString()}</p>
+                                                        </div>
+                                                        <div className="col-md-4">
+                                                            <img src="newicons/sunrise.gif" alt="Sunrise" className="icon-sm" />
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div className="col-md-6 p-4">
-                                                    <span>Humidity : {weatherData.main.humidity}%</span>
+                                                <div className="col-md-6 mini_area">
+                                                    <div className="row">
+                                                        <div className="col-md-8">
+                                                            <p>Sunset: </p>
+                                                            <p>{new Date(weatherData.sys.sunset * 1000).toLocaleTimeString()}</p>
+                                                        </div>
+                                                        <div className="col-md-4">
+                                                            <img src="newicons/sunset.gif" alt="Sunset" className="icon-sm" />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </>
                                     ) : (<span>Loading...</span>)
                                 }
                             </div>
-                            <div className="col-md-6 right_panel">
-                                {weatherData ? (
-                                    <>
-                                        <span>{weatherData.weather[0].main} - {weatherData.weather[0].description}</span>
-                                        <p className="big_temp">{weatherData.main.temp}°C</p>
-                                        <img
-                                            src={getWeatherIcons(weatherData.weather[0].main)}
-                                            alt={weatherData.weather[0].description}
-                                        />
-                                    </>
-                                ) : (<span>Loading...</span>)}
-
+                            <div className="col-md-4">
+                                <div className="right_panel">
+                                    {
+                                    weatherData ? (
+                                        <>
+                                            <p className="right_top">{weatherData.weather[0].main} - {weatherData.weather[0].description}</p>
+                                            <p className="big_temp">{weatherData.main.temp}°C</p>
+                                            <img
+                                                src={getWeatherIcons(
+                                                    weatherData.weather[0].main,
+                                                    isDaytime(weatherData.sys.sunrise, weatherData.sys.sunset)
+                                                )}
+                                                className="img-fluid"
+                                                alt={weatherData.weather[0].description}
+                                            />
+                                        </>
+                                    ) : (<span>Loading...</span>)
+                                }
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -97,5 +175,6 @@ const Weather = () => {
             </div>
         </>
     );
-}
+};
+
 export default Weather;
