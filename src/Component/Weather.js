@@ -12,12 +12,11 @@ const Weather = () => {
         const now = Date.now();
         return now >= sunrise * 1000 && now < sunset * 1000;
     };
-
     const getWeatherIcons = (weatherMain, isDay) => {
         const iconMap = {
             Clear: isDay ? "clear-day.svg" : "clear-night.svg",
             Clouds: isDay ? "partly-cloudy-day.svg" : "partly-cloudy-night.svg",
-            Rain: isDay ? "partly-cloudy-day.svg" : "partly-cloudy-night.svg",
+            Rain: isDay ? "partly-cloudy-day-rain.svg" : "partly-cloudy-night-rain.svg",
             Thunderstorm: "thunderstorm.svg",
             Mist: "mist.svg",
             Drizzle: "drizzle.svg",
@@ -80,7 +79,7 @@ const Weather = () => {
                                     weatherData ? (
                                         <>
                                             <div className="row weather_row">
-                                                <h4 className="pt-3">{weatherData.name}, {weatherData.sys.country}</h4>
+                                                <h4 className="city pt-3">{weatherData.name}, {weatherData.sys.country}</h4>
                                                 <div className="col-md-6 mini_area">
                                                     <div className="row">
                                                         <div className="col-md-8">
@@ -158,7 +157,7 @@ const Weather = () => {
                                     {
                                         weatherData ? (
                                             <>
-                                                <p className="right_top">{weatherData.weather[0].main} - {weatherData.weather[0].description}</p>
+                                                <div className="right_top">{weatherData.weather[0].main} - {weatherData.weather[0].description}</div>
                                                 <p className="big_temp">{weatherData.main.temp}°C</p>
                                                 <img
                                                     src={getWeatherIcons(
